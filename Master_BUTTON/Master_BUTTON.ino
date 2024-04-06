@@ -41,7 +41,7 @@ esp_now_peer_info_t slave;
 uint8_t data = 0;
 // send data
 
-int mac[6] = { 0x24, 0xDC, 0xC3, 0x98, 0x80, 0xC9 };
+int mac[6] = { 0x24, 0xDC, 0xC3, 0x98, 0x80, 0xC8 };
 int piezoPin[4] = { 34, 35, 33, 32 };
 unsigned long startTime[4] = { 0, 0, 0, 0 };
 int piezo = 0;
