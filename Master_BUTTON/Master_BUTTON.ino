@@ -41,7 +41,7 @@ esp_now_peer_info_t slave;
 uint8_t data = 0;
 // send data
 
-int mac[6] = { 0x24, 0xDC, 0xC3, 0x98, 0x80, 0xC8 };
+int mac[6] = { 0x24, 0xDC, 0xC3, 0x98, 0x80, 0xC9 };
 int piezoPin[4] = { 34, 35, 33, 32 };
 unsigned long startTime[4] = { 0, 0, 0, 0 };
 int piezo = 0;
@@ -150,10 +150,10 @@ void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   char macStr[18];
   snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
            mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
-  // Serial.print("Last Packet Sent to: ");
-  // Serial.println(macStr);
-  // Serial.print("Last Packet Send Status: ");
-  // Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  Serial.print("Last Packet Sent to: ");
+  Serial.println(macStr);
+  Serial.print("Last Packet Send Status: ");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
 void setup() {
@@ -172,15 +172,17 @@ void loop() {
     //on click
     if (analogRead(piezoPin[i]) > 1000) {
       Serial.println(piezoPin[i]);
-      bitWrite(data, piezoPin[i], 1);
+      bitWrite(data, i, 1);
       startTime[i] = millis();
       sendData();
     }
 
     //duration ends
-    if (millis() - startTime[i] >= 500) {
-      bitWrite(data, piezoPin[i], 0);
+    if (millis() - startTime[i] >= 500 && bitRead(data, i) != 0) {
+      bitWrite(data, i, 0);
       sendData();
     }
   }
+
+  Serial.println("------------------------------------------------------------");
 }
