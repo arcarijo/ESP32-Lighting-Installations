@@ -15,6 +15,7 @@
 uint8_t data = 0;
 int piezo[4] = { 16, 17, 18, 19 };
 const int LED = 13;
+
 // callback function that will be executed when data is received
 void OnDataRecv(const uint8_t *mac, const uint8_t *data, int len) {
   //memcpy(&myData, incomingData, sizeof(myData));
@@ -22,6 +23,17 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *data, int len) {
   Serial.println(len);
   Serial.print("Char: ");
   Serial.println(*data);
+
+  
+  for (int i = 0; i < 4; i++) {
+    if (bitRead(*data, i)) {
+      digitalWrite(LED, LOW);
+      digitalWrite(piezo[i], LOW);
+    } else {
+      digitalWrite(LED, HIGH);
+      digitalWrite(piezo[i], HIGH);
+    }
+  }
 }
 
 void setup() {
@@ -49,13 +61,4 @@ void setup() {
 }
 
 void loop() {
-    for (int i = 0; i < 4; i++) {
-    if (bitRead(data, i)) {
-      digitalWrite(LED, LOW);
-      digitalWrite(piezo[i], LOW);
-    } else {
-      digitalWrite(LED, HIGH);
-      digitalWrite(piezo[i], HIGH);
-    }
-  }
 }
