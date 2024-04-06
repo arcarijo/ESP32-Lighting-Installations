@@ -175,7 +175,7 @@ void loop() {
     if (analogRead(piezoPin[i]) > 1000 && bitRead(data, i) == 0) {
 
       bitWrite(data, i, 1);
-      for (int k = 0; k <= 8; k++) {
+      for (int k = 0; k < 8; k++) {
         Serial.print(bitRead(data, i));
       }
       Serial.println("");
@@ -185,8 +185,8 @@ void loop() {
     //duration ends
     if (millis() - startTime[i] >= 500 && bitRead(data, i) != 0) {
       bitWrite(data, i, 0);
-      for (int k = 0; k <= 8; k++) {
-        Serial.print(bitRead(data, i));
+      for (int k = 0; k < 8; k++) {
+        Serial.print(bitRead(data, k));
       }
       Serial.println("");
     }
