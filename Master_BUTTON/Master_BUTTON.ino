@@ -167,21 +167,26 @@ void setup() {
 }
 
 void loop() {
-
+  uint8_t tempData = data;
+  
+  //edit "data" and manage timers
   for (int i = 0; i <= 4; i++) {
     //on click
-    if (analogRead(piezoPin[i]) > 1000) {
+    if (analogRead(piezoPin[i]) > 1000 && bitRead(data, i) == 0) {
       Serial.println(piezoPin[i]);
       bitWrite(data, i, 1);
       startTime[i] = millis();
-      sendData();
     }
 
     //duration ends
     if (millis() - startTime[i] >= 500 && bitRead(data, i) != 0) {
       bitWrite(data, i, 0);
-      sendData();
     }
   }
-  Serial.println("------------------------------------------------------------");
+
+  //send data only if it was edited this frame
+  if (data != tempData){
+    sendData();
+    Serial.println("------------------------------------------------------------");
+  }
 }
